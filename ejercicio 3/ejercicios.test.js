@@ -17,6 +17,7 @@ const {
 
 const { actualizarMedicacion,
         aplicarOfertas,
+        actualizarInventario,
         filtrarPublicaciones } = require('./ArraysIntermedio3');
   
   // Ajusta la ruta si es necesario
@@ -215,9 +216,9 @@ const { actualizarMedicacion,
   
       // Verificar que solo se devuelven las publicaciones con el hashtag y likes >= 100
       expect(resultado).toEqual([
-        { id: 4, texto: "Evento próximo", likes: 300, hashtags: ["#Eve", "#So"] },
-        { id: 3, texto: "Oferta especial", likes: 200, hashtags: ["#So", "#Of"] },
-        { id: 1, texto: "¡Nuevo post!", likes: 150, hashtags: ["#So", "#Te"] }
+        { id: 4, texto: "Evento próximo", likes: 300, hashtags: ["#Eve", "#Soc"] },
+        { id: 3, texto: "Oferta especial", likes: 200, hashtags: ["#Soc", "#Ofe"] },
+        { id: 1, texto: "¡Nuevo post!", likes: 150, hashtags: ["#Soc", "#Tec"] }
       ]);
     });
   
@@ -225,9 +226,9 @@ const { actualizarMedicacion,
       const resultado = filtrarPublicaciones(publicacionesIniciales, "#SocialMedia", 100);
   
       // Verificar que los hashtags están truncados correctamente
-      expect(resultado[0].hashtags).toEqual(["#Eve", "#So"]); // "#Eventos" -> "#Eve", "#SocialMedia" -> "#So"
-      expect(resultado[1].hashtags).toEqual(["#So", "#Of"]);  // "#SocialMedia" -> "#So", "#Ofertas" -> "#Of"
-      expect(resultado[2].hashtags).toEqual(["#So", "#Te"]);  // "#SocialMedia" -> "#So", "#Tech" -> "#Te"
+      expect(resultado[0].hashtags).toEqual(["#Eve", "#Soc"]); // "#Eventos" -> "#Eve", "#SocialMedia" -> "#So"
+      expect(resultado[1].hashtags).toEqual(["#Soc", "#Ofe"]);  // "#SocialMedia" -> "#So", "#Ofertas" -> "#Of"
+      expect(resultado[2].hashtags).toEqual(["#Soc", "#Tec"]);  // "#SocialMedia" -> "#So", "#Tech" -> "#Te"
     });
   
     test('Ordenar publicaciones por likes en orden descendente', () => {
