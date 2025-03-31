@@ -9,8 +9,23 @@
 // Si nuevosDatos.nombre o nuevosDatos.email no están definidos, se conserva el valor actual (this.nombre o this.email).
 
 class Usuario {
-   
+  constructor(id, nombre, email) {
+    this.id = id;
+    this.nombre = nombre;
+    this.email = email;
   }
+
+  actualizarDatos(nuevosDatos) {
+    if (nuevosDatos.nombre !== undefined) { //El usuario proporcionó un nuevo nombre?
+      this.nombre = nuevosDatos.nombre;
+    }
+    if (nuevosDatos.email !== undefined) {
+      this.email = nuevosDatos.email;
+    }
+  }
+}
+
+
 
 
 //   Explicación :
@@ -30,8 +45,23 @@ class Usuario {
 // console.log(usuarios); // [{ id: 1, nombre: "Ana", email: "nuevo_email@example.com" }]
 
   const gestionarUsuario = (accion, datos, usuarios = []) => {
-    
+    if (accion === "crear") {
+      const nuevoUsuario = new Usuario(datos.id, datos.nombre, datos.email);
+      usuarios.push(nuevoUsuario);
+    } else if (accion === "actualizar") {
+      const usuarioExistente = usuarios.find((usuario) => usuario.id === datos.id);
+      if (usuarioExistente) {
+        usuarioExistente.actualizarDatos(datos);
+      }
+    }
+    return usuarios;
   };
+  
+
+
+
+
+
 
 
 //   Explicación :
@@ -44,8 +74,26 @@ class Usuario {
 //   Retorna true si la reserva fue exitosa, o false si la habitación ya estaba ocupada.
 
   class Habitacion {
-   
+    constructor(numero, capacidad) {
+      this.numero = numero; 
+      this.capacidad = capacidad; 
+      this.disponible = true; 
+    }
+  
+    reservar() {
+      if (this.disponible) {
+        this.disponible = false; 
+        return true; 
+      }
+      return false; // La habitación ya estaba ocupada
+    }
   }
+
+
+
+
+
+
 
 
 //   Explicación :
@@ -68,7 +116,27 @@ class Usuario {
 
   const hacerReserva = (habitacionNumero, habitaciones) => {
   
-  };
+    const habitacionEncontrada = habitaciones.find(habitacion => habitacion.numero === habitacionNumero);
+  if (habitacionEncontrada && habitacionEncontrada.reservar()) {
+    return `Habitación ${habitacionNumero} reservada`;
+  }
+  return "Habitación no disponible";
+};
+
+// Ejemplo de uso:
+const habitaciones = [
+  new Habitacion(101, 2),
+  new Habitacion(102, 4)
+];
+
+// Caso 1: Reservar una habitación disponible
+console.log(hacerReserva(101, habitaciones)); // Salida: "Habitación 101 reservada"
+
+// Caso 2: Intentar reservar la misma habitación nuevamente
+console.log(hacerReserva(101, habitaciones));
+
+
+
 
 
 //   Explicación :
@@ -81,8 +149,21 @@ class Usuario {
 // Cambia el estado de completada a true.
 
   class Tarea {
-
+    constructor(id, descripcion) {
+      this.id = id;
+      this.descripcion = descripcion;
+      this.completada = false;
+    }
+  
+    marcarComoCompletada() {
+      this.completada = true;
+    }
   }
+
+
+
+
+
 
 //   Explicación :
 
@@ -103,8 +184,24 @@ class Usuario {
 
 
   const gestionarTareas = (accion, tareaData, tareas) => {
-   
+    if (accion === "crear") {
+      const nuevaTarea = new Tarea(tareas.length + 1, tareaData.descripcion);
+      tareas.push(nuevaTarea);
+    } else if (accion === "completar") {
+      const tareaExistente = tareas.find(tarea => tarea.id === tareaData.id);
+      if (tareaExistente) {
+        tareaExistente.marcarComoCompletada();
+      }
+    }
+    return tareas;
   };
+
+
+
+
+
+
+  
 
 
   module.exports = { Usuario, Habitacion, Tarea, gestionarUsuario, hacerReserva, gestionarTareas };

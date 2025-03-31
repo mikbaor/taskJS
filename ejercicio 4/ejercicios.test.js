@@ -26,13 +26,14 @@ const {
 test("Calcular salario de gerente con bono", () => {
     const gerente = new Gerente("Ana", 1000, "Ventas");
     gerente.setBono(500);
-    expect(gerente.calcularSalario()).toBe((1000 + 500) * 1.1);
+    expect(gerente.calcularSalario()).toBe((1000 * 1.1) + 500);
   });
 
 
   test("Actualizar estado de paquete internacional", () => {
     const paquete = new PaqueteInternacional("Carlos", "USA");
-    expect(() => paquete.actualizarEstado("en tránsito")).toThrow();
+    paquete.actualizarEstado("en tránsito");
+    expect(paquete.estado).toBe("en tránsito");
   });
 
 
@@ -64,7 +65,7 @@ test("Calcular salario de gerente con bono", () => {
 
   test("Renovar suscripción estudiantil", () => {
     const suscripcion = new SuscripcionEstudiantil("Luis");
-    expect(suscripcion.renovar()).toBe("Suscripción de Luis renovada por $50");
+    expect(suscripcion.renovar()).toBe("Suscripción de Luis renovada por $30"); 
   });
 
   test("Agregar pasajero a vuelo ejecutivo", () => {

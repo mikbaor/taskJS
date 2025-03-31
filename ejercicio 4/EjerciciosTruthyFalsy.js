@@ -9,8 +9,32 @@
 
 
 const validarFormulario = (formulario) => {
+  if (!formulario.nombre || !formulario.email || !formulario.password) {
+    return "Faltan campos obligatorios";
+  }
+  return "Formulario válido";
+};
 
-  };
+// Ejemplos de uso:
+console.log(validarFormulario({ nombre: "Ana", email: "", password: "123" }));
+// Salida: "Faltan campos obligatorios"
+
+console.log(validarFormulario({ nombre: "Ana", email: "ana@example.com", password: "123" }));
+// Salida: "Formulario válido"
+
+console.log(validarFormulario({ nombre: "", email: "juan@example.com", password: "abc123" }));
+// Salida: "Faltan campos obligatorios"
+
+console.log(validarFormulario({ nombre: "Luis", email: "luis@example.com", password: "" }));
+// Salida: "Faltan campos obligatorios"
+
+
+
+
+
+
+
+
 
 
 //   Estado de Carga en una API
@@ -24,8 +48,25 @@ const validarFormulario = (formulario) => {
 //   Ejemplo : mostrarEstado([]);
 
 const mostrarEstado = (data) => {
+  if (!data) {
+    return "Cargando...";
+  } else if (data.length === 0) {
+    return "No hay datos";
+  } else {
+    return "Datos disponibles";
+  }
+};
 
-  };
+console.log(mostrarEstado(null)); // Salida: "Cargando..."
+console.log(mostrarEstado([])); // Salida: "No hay datos"
+console.log(mostrarEstado(["dato1", "dato2"])); // Salida: "Datos disponibles"
+
+
+
+
+
+
+
 
 
 //   Autenticación de Usuario
@@ -39,8 +80,22 @@ const mostrarEstado = (data) => {
 
 
 const verificarSesion = (token) => {
+  if (!token) {
+    return "/login";
+  } else {
+    return "/dashboard";
+  }
+};
 
-  };
+// Ejemplos de uso:
+console.log(verificarSesion(undefined)); // Salida: "/login"
+console.log(verificarSesion("abc123")); // Salida: "/dashboard"
+console.log(verificarSesion("")); // Salida: "/login"
+console.log(verificarSesion(null)); // Salida: "/login"
+
+
+
+
 
 
 
@@ -55,8 +110,21 @@ const verificarSesion = (token) => {
 
 
 const mostrarCarrito = (productos) => {
+  if (!productos || productos.length === 0) {
+    return "Carrito vacío";
+  } else {
+    return `Hay ${productos.length} productos`;
+  }
+};
 
-  };
+// Ejemplos de uso:
+console.log(mostrarCarrito([])); // Salida: "Carrito vacío"
+console.log(mostrarCarrito(["Producto1", "Producto2"])); // Salida: "Hay 2 productos"
+console.log(mostrarCarrito(null)); // Salida: "Carrito vacío"
+console.log(mostrarCarrito(undefined)); // Salida: "Carrito vacío"
+
+
+
 
 
 //   Verificación de Permisos de Usuario
@@ -70,8 +138,23 @@ const mostrarCarrito = (productos) => {
 
 
 const verificarPermiso = (usuario) => {
+  if (usuario.rol === "admin") {
+    return true;
+  } else {
+    return false;
+  }
+};
 
-  };
+// Ejemplos de uso:
+console.log(verificarPermiso({ rol: "admin" })); // Salida: true
+console.log(verificarPermiso({ rol: "invitado" })); // Salida: false
+console.log(verificarPermiso({})); // Salida: false
+console.log(verificarPermiso({ rol: undefined })); // Salida: false
+
+
+
+
+
 
 
 //   Estado de una Tarea Asíncrona
@@ -86,8 +169,25 @@ const verificarPermiso = (usuario) => {
 
 
 const mostrarEstadoTarea = (estado) => {
+  if (estado === "loading") {
+    return "Procesando...";
+  } else if (estado === "error") {
+    return "Ocurrió un error";
+  } else if (estado === null) {
+    return "Tarea no iniciada";
+  }
+};
 
-  };
+// Ejemplos de uso:
+console.log(mostrarEstadoTarea("loading")); // Salida: "Procesando..."
+console.log(mostrarEstadoTarea("error")); // Salida: "Ocurrió un error"
+console.log(mostrarEstadoTarea(null)); // Salida: "Tarea no iniciada"
+
+
+
+
+
+
 
 
 //   Manejo de Parámetros Opcionales
@@ -100,9 +200,28 @@ const mostrarEstadoTarea = (estado) => {
 //   Ejemplo : configurarOpciones({ velocidad: 20 });
 
 const configurarOpciones = (opciones) => {
+  let velocidad;
+  if (opciones.velocidad) {
+    velocidad = opciones.velocidad;
+  } else {
+    velocidad = 10;
+  }
 
-  };
+  let tema;
+  if (opciones.tema) {
+    tema = opciones.tema;
+  } else {
+    tema = "claro";
+  }
 
+  return { velocidad, tema };
+};
+
+
+
+
+
+  
 
   module.exports = {
     validarFormulario,

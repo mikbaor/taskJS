@@ -15,9 +15,26 @@
 // calcularSalario() :
 // Calcula el salario total sumando el salario base y el bono.
 
-class Empleado {
- 
+class Empleado { //Estoy creando una clase. Esta representa a un empleado y tendrá propiedades y métodos relacionados con él.
+  constructor(nombre, salarioBase) {
+    this.nombre = nombre;
+    this.salarioBase = salarioBase;
+    this._bono = 0;
   }
+
+  setBono(bono) {
+    if (typeof bono === "number" && bono >= 0) {
+      this._bono = bono;
+    } else {
+      throw new Error("El bono debe ser un número positivo.");
+    }
+  }
+
+  calcularSalario() {
+    return this.salarioBase + this._bono;
+  }
+}
+
 
 
 //   Clase Gerente (hereda de Empleado)
@@ -28,10 +45,34 @@ class Empleado {
 
 // calcularSalario() :
 // Añade un 10% adicional al salario base (no al bono) por ser gerente.
+
+
   
   class Gerente extends Empleado {
-    
+    constructor(nombre, salarioBase, departamento) {
+      super(nombre, salarioBase);
+    this.departamento = departamento
   }
+  
+
+  
+  calcularSalario() {
+    return (this.salarioBase *1.10 )+ this._bono
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   //  Clase Paquete
   // Propósito : Representar un paquete con seguimiento de estado y un ID único.
@@ -62,9 +103,27 @@ class Empleado {
 
 
   class Paquete {
-    
-  }
 
+    static contadorPaquetes = 0;
+
+    constructor(destinatario) {
+      this.id = ++Paquete.contadorPaquetes;
+      this.destinatario = destinatario;
+      this._estado = "enviado";
+    }
+  
+    get estado() {
+      return this._estado;
+    }
+  
+    actualizarEstado(nuevoEstado) {
+      const estadosPermitidos = ["enviado", "en tránsito", "entregado"];
+      if (estadosPermitidos.includes(nuevoEstado)) {
+        this._estado = nuevoEstado;
+      }
+    }
+  }
+  
 
 
 //Clase PaqueteInternacional (hereda de Paquete)
@@ -80,7 +139,32 @@ class Empleado {
 
   class PaqueteInternacional extends Paquete {
 
+    constructor(destinatario, pais) {
+      super(destinatario); 
+      this.pais = pais;    
+    }
+
   }
+
+  let paqueteIntl = new PaqueteInternacional
+
+  console.log(`ID: ${paqueteIntl.id}`);          
+console.log(`Destinatario: ${paqueteIntl.destinatario}`);
+console.log(`País: ${paqueteIntl.pais}`);       
+console.log(`Estado: ${paqueteIntl.estado}`);   
+
+// Actualizar el estado
+paqueteIntl.actualizarEstado("en tránsito");
+console.log(`Estado actualizado: ${paqueteIntl.estado}`);
+
+
+
+
+
+
+
+
+
 
 
 // Clase Producto
@@ -102,9 +186,44 @@ class Empleado {
 // Ejemplo: Si precio = 100 y porcentaje = 20, el nuevo precio será 80.
 
   class Producto {
+
+    constructor(nombre, precio, stock) {
+      this.nombre = nombre;
+      this.precio = precio;
+      this.stock = stock
+    }
+
+    aplicarDescuento(porcentaje) {
+      if (porcentaje >= 0 && porcentaje <= 100) {
+        const descuento = (this.precio * porcentaje) / 100;
+        this.precio = this.precio - descuento;
+      } 
+    }
    
   }
+
+  // Crear un producto
+let telefono = new Producto("Teléfono", 100, 20);
+
+// Mostrar información inicial
+console.log(`Precio inicial: $${telefono.precio}`); // Precio inicial: $500
+
+// Aplicar un descuento del 25%
+telefono.aplicarDescuento(25);
+console.log(`Precio con descuento: $${telefono.precio}`); // Precio con descuento: $375
+
+// Intentar aplicar un descuento inválido
+telefono.aplicarDescuento(150);
   
+
+
+
+
+
+
+
+
+
 
 // Clase ProductoDigital (hereda de Producto)
 // Propósito : Extender Producto para representar productos digitales (ej: eBooks, software), que no permiten descuentos .
@@ -119,7 +238,29 @@ class Empleado {
 
   class ProductoDigital extends Producto {
 
+    constructor(nombre, precio, stock, tamanoMB) {
+      super(nombre, precio, stock); 
+      this.tamanoMB = tamanoMB;     
+    }
+  
+    
+    aplicarDescuento() {
+      console.log("Error: Los productos digitales no admiten descuentos.");
+    }
+
   }
+
+
+
+
+
+
+
+
+
+
+
+
 
 //   Clase UsuarioCasino
 // Propósito : Representar a un usuario de un casino con un saldo para apostar.
@@ -140,9 +281,52 @@ class Empleado {
 
 
   class UsuarioCasino {
+
+    constructor(nombre, saldo) {
+      this.nombre = nombre; // Nombre del usuario
+      this._saldo = saldo;  // Saldo inicial (encapsulado)
+    }
+  
+    // Getter para acceder al saldo encapsulado
+    get saldo() {
+      return this._saldo;
+    }
+  
+    // Método para realizar una apuesta
+    apostar(cantidad) {
+      if (cantidad > this._saldo) {
+        console.log("Error: No tienes suficiente saldo para esta apuesta.");
+      } else {
+        this._saldo -= cantidad; // Resta la cantidad apostada del saldo
+        return this.saldo
+      }
+    }
   
   }
+
+//   const juancho = new UsuarioCasino("Juancho", 500);
+
+// console.log(`${juan.nombre}, tu saldo inicial es: $${juancho.saldo}`);
+
+// juancho.registrarApuesta(200);
+
+// try {
+//   juancho.registrarApuesta(400);
+// } catch (error) {
+//   console.log("Se produjo un error:", error.message);
+// }
+
+// console.log(`${juancho.nombre}, tu saldo final es: $${juan.saldo}`);
   
+
+
+
+
+
+
+
+
+
 
   // Clase Ruleta (hereda de UsuarioCasino)
   // Propósito : Extender la funcionalidad para un juego de ruleta con reglas específicas.
@@ -161,8 +345,36 @@ class Empleado {
   // Usa super.apostar(cantidad) para reutilizar la lógica de apuesta del padre.
 
   class Ruleta extends UsuarioCasino {
-   
+    static apuestaMinima = 100;
+
+    jugar(cantidad) {
+      if (cantidad < Ruleta.apuestaMinima) {
+        throw new Error(`La apuesta mínima para la ruleta es de ${Ruleta.apuestaMinima}.`);
+      }
+  
+      return super.apostar(cantidad);
+    }
   }
+
+  try {
+    const jugador = new Ruleta("Juan", 500);
+    console.log(jugador.jugar(200));
+    console.log(jugador.jugar(50));
+  } catch (error) {
+    console.error(error.message);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   // Clase Vuelo
@@ -181,8 +393,56 @@ class Empleado {
   // Validación : Lanza un error si el vuelo está lleno.
 
   class Vuelo {
+    constructor(numero, capacidad) {
+      this.numero = numero;
+      this.capacidad = capacidad;
+      this._pasajeros = [];
+    }
+  
+    agregarPasajero(pasajero) {
+      if (this._pasajeros.length >= this.capacidad) {
+        throw new Error("Vuelo lleno");
+      }
+  
+      this._pasajeros.push(pasajero);
+  
+      return (
+        "Pasajero " +
+        pasajero +
+        " agregado al vuelo " +
+        this.numero +
+        ". Espacios disponibles: " +
+        (this.capacidad - this._pasajeros.length)
+      );
+    }
    
   }
+
+
+try {
+  const vueloAA123 = new Vuelo("AA123", 3);
+
+  console.log(vueloAA123.agregarPasajero("Juan"));
+  console.log(vueloAA123.agregarPasajero("María"));
+  console.log(vueloAA123.agregarPasajero("Pedro"));
+
+  console.log(vueloAA123.agregarPasajero("Ana"));
+} catch (error) {
+  console.error(error.message);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //   Clase VueloEjecutivo (hereda de Vuelo)
 // Propósito : Extender Vuelo para vuelos ejecutivos con servicios VIP.
@@ -194,8 +454,35 @@ class Empleado {
 // Retorna true para indicar que todos los vuelos ejecutivos tienen servicio VIP.
   
   class VueloEjecutivo extends Vuelo {
+    constructor(numero, capacidad) {
+      super(numero, capacidad);
+      this._servicioVIP = true;
+    }
+  
+    static esVip() {
+      return true;
+    }
   
   }
+  try {
+    const vueloVIP123 = new VueloEjecutivo("VIP123", 5);
+  
+    console.log(vueloVIP123.agregarPasajero("Carlos"));
+    console.log(`¿Este vuelo tiene servicio VIP? ${vueloVIP123._servicioVIP}`);
+    console.log(`¿Todos los vuelos ejecutivos son VIP? ${VueloEjecutivo.esVip()}`);
+  } catch (error) {
+    console.error(error.message);
+  }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -215,7 +502,33 @@ class Empleado {
   // Retorna el _costoBase sin modificaciones.
 
   class Ruta {
+    constructor(origen, destino) {
+      this.origen = origen;
+      this.destino = destino;
+      this._costoBase = 100;
+    }
+  
+    calcularCosto() {
+      return this._costoBase;
+    }
   }
+
+  const ruta1 = new Ruta("Ciudad A", "Ciudad B");
+console.log(`Origen: ${ruta1.origen}, Destino: ${ruta1.destino}`);
+console.log(`Costo de la ruta: ${ruta1.calcularCosto()}`);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //   Clase RutaExpress (hereda de Ruta)
 // Propósito : Extender Ruta para rutas express con un costo 1.5 veces mayor .
@@ -231,8 +544,29 @@ class Empleado {
 // Usa el método heredado, que ahora retorna el _costoBase modificado (150 en lugar de 100).
   
   class RutaExpress extends Ruta {
+    constructor(origen, destino) {
+      super(origen, destino);
+      this._costoBase *= 1.5;
+    }
  
   }
+
+  const rutaExpress1 = new RutaExpress("Ciudad A", "Ciudad B");
+console.log(`Origen: ${rutaExpress1.origen}, Destino: ${rutaExpress1.destino}`);
+console.log(`Costo de la ruta express: ${rutaExpress1.calcularCosto()}`);
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   // Clase Suscripcion
   // Propósito : Representar una suscripción genérica con un precio basado en el plan elegido.
@@ -250,9 +584,38 @@ class Empleado {
  //`Suscripción de ${this.usuario} renovada por $${this._precio}`
 
   class Suscripcion {
-   
+    constructor(usuario, plan) {
+      this.usuario = usuario;
+      this.plan = plan;
+  
+      if (this.plan === "premium") {
+        this._precio = 100;
+      } else if (this.plan === "básico") {
+        this._precio = 50;
+      } else if (this.plan === "estudiante") {
+        // No asignamos precio aquí; se redefinirá en SuscripcionEstudiantil
+      } else {
+        throw new Error("Plan no válido. Debe ser 'premium', 'básico' o 'estudiante'.");
+      }
+    }
+  
+    renovar() {
+      return `Suscripción de ${this.usuario} renovada por $${this._precio}`;
+    }
   }
   
+
+
+
+
+
+
+
+
+
+
+
+
 
   // Clase SuscripcionEstudiantil (hereda de Suscripcion)
   // Propósito : Extender Suscripcion para estudiantes con un precio fijo y plan específico.
@@ -263,10 +626,36 @@ class Empleado {
   // Anula _precio :
 
   // Hereda usuario y plan de Suscripcion, pero redefine _precio para aplicar un costo especial.
-  
+  // el nuevo precio debe ser 30
 
   class SuscripcionEstudiantil extends Suscripcion {
+    constructor(usuario) {
+      super(usuario, "estudiante"); // Llama al constructor de la clase padre con plan fijo "estudiante"
+      this._precio = 30; // Redefine el precio para estudiantes
+    }
   }
+
+  const suscripcionEstudiante = new SuscripcionEstudiantil("Luis");
+console.log(suscripcionEstudiante.renovar());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   module.exports = {
     Gerente,
